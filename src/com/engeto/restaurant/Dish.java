@@ -72,4 +72,14 @@ public class Dish {
 
     //endregion
 
+    public String stringToFile(String separator){
+        String lineToWrite = "";
+        lineToWrite += this.getDishId()+separator;
+        lineToWrite += this.getTitle()+separator;
+        lineToWrite += this.getPrice()+separator;
+        lineToWrite += this.getPreparationTime()+separator;
+        lineToWrite += this.getImage();
+        return lineToWrite;
+    }
+
 }
