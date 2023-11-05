@@ -1,13 +1,11 @@
 package com.engeto.restaurant;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class OrderBook extends ArrayList<Order> {
     private String separator = "\t";
@@ -24,6 +22,22 @@ public class OrderBook extends ArrayList<Order> {
 
     }
 
+    public void readFromFile(String fileName) throws RestaurantException {
+        try (Scanner scanner = new Scanner(new BufferedReader(new FileReader(fileName)))) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                try {
+                    parseLineFromFile(line);
+                } catch (RestaurantException exception) {
+                    throw new RestaurantException("Error reading OrderBook from file: Could not parse line: "
+                            + line + " " + exception.getLocalizedMessage());
+                }
+            }
+        } catch (FileNotFoundException exc) {
+            throw new RestaurantException("Error reading OrderBook from file: File not found" + exc.getLocalizedMessage());
+        }
+    }
+
     private void parseLineFromFile(String line) throws RestaurantException {
         String[] lineItems = line.split(separator);
         if (lineItems.length == 5) {
@@ -38,10 +52,10 @@ public class OrderBook extends ArrayList<Order> {
             } catch (NumberFormatException exc){
                 throw new RestaurantException("Error parsing Orders from file on line: "+line);
             } catch (DateTimeParseException exc){
-                throw new RestaurantException("Error parsing Orders from file on line: "+line);
+                throw new RestaurantException("Error parsing Order time information from file on line: "+line);
             }
         } else {
-            throw new RestaurantException("Error reading Dishes from file: incorrect file format on line: " + line);
+            throw new RestaurantException("Error reading Orders from file: incorrect file format on line: " + line);
         }
     }
 

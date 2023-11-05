@@ -8,6 +8,15 @@ import java.util.Scanner;
 public class DishBook extends ArrayList<Dish> {
     private String separator = "\t";
 
+    public Dish get(int dishId){
+        for(Dish dish : this){
+            if(dish.getDishId()==dishId){
+                return dish;
+            }
+        }
+        return null;
+    }
+
     public void saveToFile(String fileName) throws RestaurantException {
 
         try (PrintWriter outputWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileName)))) {
