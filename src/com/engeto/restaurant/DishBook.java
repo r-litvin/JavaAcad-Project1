@@ -40,6 +40,7 @@ public class DishBook extends ArrayList<Dish> {
                             + line + " " + exception.getLocalizedMessage());
                 }
             }
+            this.get(0).setDishIdStart(getHighestId()+1);
         } catch (FileNotFoundException exc) {
             throw new RestaurantException("Error reading DishBook from file: File not found" + exc.getLocalizedMessage());
         }
@@ -58,5 +59,16 @@ public class DishBook extends ArrayList<Dish> {
         } else {
             throw new RestaurantException("Error reading Dishes from file: incorrect file format on line: " + line);
         }
+    }
+
+    private int getHighestId(){
+        int highestId = 0;
+        for(Dish dish : this){
+            if (dish.getDishId()>highestId){
+                highestId = dish.getDishId();
+            }
+
+        }
+        return highestId;
     }
 }

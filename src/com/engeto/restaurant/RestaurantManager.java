@@ -1,5 +1,8 @@
 package com.engeto.restaurant;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 public class RestaurantManager {
     private DishBook dishBook;
     private OrderBook orderBook;
@@ -34,5 +37,18 @@ public class RestaurantManager {
         } else {
             return totalFulfillmentTime / (double) totalFulfilledOrders;
         }
+    }
+
+    public ArrayList<Dish> dishesOrderedToday(){
+        ArrayList<Dish> orderedToday = new ArrayList<>();
+        for (Order order : orderBook){
+            LocalDate ordered = order.getOrderedTime().toLocalDate();
+            if(ordered.equals(LocalDate.now())) {
+                if (!orderedToday.contains(dishBook.get(order.getDishId()))) {
+                    orderedToday.add(dishBook.get(order.getDishId()));
+                }
+            }
+        }
+        return orderedToday;
     }
 }

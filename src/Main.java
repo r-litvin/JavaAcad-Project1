@@ -44,6 +44,20 @@ public class Main {
         mapOrdersToTablePrice(orderBook2, 15, dishBook2);
 
         //System.out.println("order7 fulfilment "+order7.getFulfilmentTime()); //null if empty
+        try {
+            Dish newDish = new Dish("Uho", BigDecimal.valueOf(15), 7);
+            dishBook2.add(newDish);
+            Order newOrder = new Order(7,newDish.getDishId());
+            newOrder.setOrderedTime(LocalDateTime.of(2023,11,4,15,32));
+            orderBook2.add(newOrder);
+            System.out.println("newDish "+newDish.getDishId());
+            System.out.println("NewOrder "+ newOrder);
+            System.out.println("DishBook now :");
+            //unique numbers don't work
+            dishBook2.forEach(System.out::println);
+
+        } catch (Exception exc){}
+
 
         //task01; task03;
         testRestaurantManager(dishBook2, orderBook2);
@@ -120,11 +134,14 @@ public class Main {
 
     public static void testRestaurantManager(DishBook dishBook, OrderBook orderBook){
         RestaurantManager restaurantManager = new RestaurantManager(dishBook, orderBook);
-        //test01 - count unfulfilled orders
+        //task01 - count unfulfilled orders
         System.out.println("Number of unfulfilled orders is: "
                 + restaurantManager.countUnfulfilledOrders());
-        //test03 - average fulfillment time
+        //task03 - average fulfillment time
         System.out.println("Average fulfillment time is: "
                 + String.format("%.0f",restaurantManager.averageFulfillmentTime())+ " minutes.");
+        //task05 - list of dishes ordered today
+        System.out.println("Dishes ordered today:");
+        restaurantManager.dishesOrderedToday().forEach(System.out::println);
     }
 }
