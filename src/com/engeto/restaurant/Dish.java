@@ -10,15 +10,15 @@ public class Dish {
     private int preparationTime;
     private String image;
 
-    public Dish(String title, BigDecimal price, int preparationTime, String image) {
+    public Dish(String title, BigDecimal price, int preparationTime, String image) throws RestaurantException  {
         this.dishId = dishIdStart++;
         this.title = title;
         this.price = price;
         this.setPreparationTime(preparationTime);
         this.image = image;
     }
-    //this constructor for loading Dishes from file
-    public Dish(int dishId, String title, BigDecimal price, int preparationTime, String image) {
+    //constructor for loading Dishes from file
+    public Dish(int dishId, String title, BigDecimal price, int preparationTime, String image)  throws RestaurantException{
         this.dishId = dishId;
         this.title = title;
         this.price = price;
@@ -26,7 +26,7 @@ public class Dish {
         this.image = image;
     }
 
-    public Dish(String title, BigDecimal price, int preparationTime) {
+    public Dish(String title, BigDecimal price, int preparationTime) throws RestaurantException {
         this(title, price, preparationTime, "blank");
     }
 
@@ -51,7 +51,10 @@ public class Dish {
         return preparationTime;
     }
 
-    public void setPreparationTime(int preparationTime) {
+    public void setPreparationTime(int preparationTime) throws RestaurantException {
+        if (preparationTime <= 0){
+            throw new RestaurantException("Error setting up new Dish: preparation time has to be more than 0 minutes!");
+        }
         this.preparationTime = preparationTime;
     }
 
@@ -61,6 +64,10 @@ public class Dish {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getDishId() {
+        return dishId;
     }
 
     //endregion
