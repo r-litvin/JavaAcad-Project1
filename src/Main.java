@@ -1,11 +1,8 @@
-import com.engeto.restaurant.Dish;
-import com.engeto.restaurant.DishBook;
-import com.engeto.restaurant.OrderBook;
-import com.engeto.restaurant.Order;
-import com.engeto.restaurant.RestaurantException;
+import com.engeto.restaurant.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class Main {
@@ -33,15 +30,32 @@ public class Main {
         Order order4 = new Order(15, 1);
         orderBook2.add(order3); orderBook2.add(order4);
         Order order5 = new Order(15, 3);
+        order5.setOrderedTime(LocalDateTime.of(2023, 11,5,12,44));
         Order order6 = new Order(15, 3);
         orderBook2.add(order5); orderBook2.add(order6);
         order5.setFulfilmentTime(LocalDateTime.now()); order6.setFulfilmentTime(LocalDateTime.now());
         //pro stul #2
         Order order7 = new Order(2, 0); Order order8 = new Order(2, 3);
         Order order9 = new Order(2, 2); Order order10 = new Order(2, 3);
+        order7.setOrderedTime(LocalDateTime.of(2023,11,5,14,34));
+        order7.setFulfilmentTime(LocalDateTime.now());
         orderBook2.add(order7); orderBook2.add(order8);
         orderBook2.add(order9); orderBook2.add(order10);
         mapOrdersToTablePrice(orderBook2, 15, dishBook2);
+
+        //System.out.println("order7 fulfilment "+order7.getFulfilmentTime()); //null if empty
+
+        //task01; task03;
+        testRestaurantManager(dishBook2, orderBook2);
+        //task02 - option to sort by orderedTime
+        orderBook2.sort(new OrderOrderedTimeComparator());
+        //orderBook2.forEach(System.out::println);
+
+        //System.out.println("minutes diff for order7: "+
+        //                ChronoUnit.MINUTES.between(order5.getOrderedTime(), order5.getFulfilmentTime()));
+        //task03 - average fulfillment time
+
+
 
 
 
@@ -102,5 +116,15 @@ public class Main {
         }
         System.out.println("Total for orders on table "+tableId
                 + " is "+totalPrice + " CZK.");
+    }
+
+    public static void testRestaurantManager(DishBook dishBook, OrderBook orderBook){
+        RestaurantManager restaurantManager = new RestaurantManager(dishBook, orderBook);
+        //test01 - count unfulfilled orders
+        System.out.println("Number of unfulfilled orders is: "
+                + restaurantManager.countUnfulfilledOrders());
+        //test03 - average fulfillment time
+        System.out.println("Average fulfillment time is: "
+                + String.format("%.0f",restaurantManager.averageFulfillmentTime())+ " minutes.");
     }
 }

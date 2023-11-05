@@ -1,6 +1,7 @@
 package com.engeto.restaurant;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 
 public class Order {
@@ -38,6 +39,10 @@ public class Order {
     public LocalDateTime getOrderedTime() {
         return orderedTime;
     }
+    /* Only for testing sort method! */
+    public void setOrderedTime(LocalDateTime orderedTime) {
+        this.orderedTime = orderedTime;
+    }
 
     public LocalDateTime getFulfilmentTime() {
         return fulfilmentTime;
@@ -66,4 +71,17 @@ public class Order {
         return lineToWrite;
     }
 
+    @Override
+    public String toString() {
+        return this.stringToFile("; ");
+    }
+
+    //not used now?
+    public int compareTo(Order otherOrder) {
+        return this.getOrderedTime().compareTo(otherOrder.getOrderedTime());
+    }
+
+    public int fulfillmentTimeMinutes(){
+        return (int) ChronoUnit.MINUTES.between(this.getOrderedTime(), this.getFulfilmentTime());
+    }
 }
