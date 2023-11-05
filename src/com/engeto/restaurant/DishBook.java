@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DishBook extends ArrayList<Dish> {
-    private final String separator = "\t";
+    private String separator = "\t";
 
     public void saveToFile(String fileName) throws RestaurantException {
 

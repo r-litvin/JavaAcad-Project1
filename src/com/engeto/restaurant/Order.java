@@ -16,6 +16,14 @@ public class Order {
         this.orderedTime = LocalDateTime.now();
     }
 
+    public Order(int tableNumber, int dishId, LocalDateTime orderedTime, LocalDateTime fulfilmentTime, boolean isPaid){
+        this.tableNumber = tableNumber;
+        this.dishId = dishId;
+        this.orderedTime = orderedTime;
+        this.setFulfilmentTime(fulfilmentTime);
+        this.setPaid(isPaid);
+    }
+
     //region: getters and setters
 
 
@@ -48,5 +56,14 @@ public class Order {
     }
     //endregion
 
+    public String stringToFile(String separator) {
+        String lineToWrite = "";
+        lineToWrite += tableNumber + separator;
+        lineToWrite += dishId + separator;
+        lineToWrite += orderedTime + separator;
+        lineToWrite += fulfilmentTime + separator;
+        lineToWrite += isPaid;
+        return lineToWrite;
+    }
 
 }

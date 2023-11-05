@@ -14,25 +14,16 @@ public class Main {
         testAddDishes(dishBook);
         testAddOrder(orders, dishBook);
 
-        //test saving DishBook:
-        try {
-            dishBook.saveToFile("dish_book_00.txt");
-        } catch (RestaurantException exc){
-            System.err.println("Dish Book could not be saved: "+exc.getLocalizedMessage());
-        }
+        testSaveDishBook(dishBook);
         //test loading DishBook from file:
-        DishBook dishBook2 = new DishBook();
-        try {
-            dishBook2.readFromFile("dish_book_01.txt");
-        } catch (RestaurantException exc){
-            System.err.println("Dish Book could not be read from file "+exc.getLocalizedMessage());
-        }
-        System.out.println("dishbook2 now has size: "+dishBook2.size()+"");
-        System.out.println("dish #2 in dishbook is "+dishBook2.get(2).stringToFile(" "));
+        DishBook dishBook2 = testReadDishBookFromFile();
 
 
         System.out.println("Restaurant backend shut down.");
     }
+
+
+
 
     private static void testAddDishes(DishBook dishBook){
         try {
@@ -52,5 +43,26 @@ public class Main {
                 order1.getTableNumber()+" has dishId "+
                 order1.getDishId());
         orders.add(order1);
+    }
+
+    private static void testSaveDishBook(DishBook dishBook) {
+        //test saving DishBook:
+        try {
+            dishBook.saveToFile("dish_book_00.txt");
+        } catch (RestaurantException exc){
+            System.err.println("Dish Book could not be saved: "+exc.getLocalizedMessage());
+        }
+    }
+
+    private static DishBook testReadDishBookFromFile() {
+        DishBook dishBook2 = new DishBook();
+        try {
+            dishBook2.readFromFile("dish_book_01.txt");
+        } catch (RestaurantException exc){
+            System.err.println("Dish Book could not be read from file "+exc.getLocalizedMessage());
+        }
+        System.out.println("dishbook2 now has size: "+ dishBook2.size()+"");
+        System.out.println("dish #2 in dishbook is "+ dishBook2.get(2).stringToFile(" "));
+        return dishBook2;
     }
 }
