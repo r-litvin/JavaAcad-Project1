@@ -59,11 +59,10 @@ public class Main {
         } catch (Exception exc){}
 
 
-        //task01; task03;
+        //task01; task03; task05;
         testRestaurantManager(dishBook2, orderBook2);
-        //task02 - option to sort by orderedTime
-        orderBook2.sort(new OrderOrderedTimeComparator());
-        //orderBook2.forEach(System.out::println);
+        //task02 - option to sort OrderBook by orderedTime
+        orderBook2.sort();
 
         //System.out.println("minutes diff for order7: "+
         //                ChronoUnit.MINUTES.between(order5.getOrderedTime(), order5.getFulfilmentTime()));

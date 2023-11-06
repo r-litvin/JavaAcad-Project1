@@ -10,6 +10,10 @@ import java.util.Scanner;
 public class OrderBook extends ArrayList<Order> {
     private String separator = "\t";
 
+    public void sort(){
+        this.sort(new OrderOrderedTimeComparator());
+    }
+
     public void saveToFile(String fileName) throws RestaurantException {
 
         try (PrintWriter outputWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileName)))) {
