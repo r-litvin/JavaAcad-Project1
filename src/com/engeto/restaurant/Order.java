@@ -7,19 +7,22 @@ import java.util.HashMap;
 public class Order {
     private int tableNumber;
     private int dishId;
+    private int dishCount;
     private LocalDateTime orderedTime;
     private LocalDateTime fulfilmentTime;
     private boolean isPaid;
 
-    public Order(int tableNumber, int dishId){
+    public Order(int tableNumber, int dishId, int dishCount){
         this.tableNumber = tableNumber;
         this.dishId = dishId;
+        this.dishCount = dishCount;
         this.orderedTime = LocalDateTime.now();
     }
 
-    public Order(int tableNumber, int dishId, LocalDateTime orderedTime, LocalDateTime fulfilmentTime, boolean isPaid){
+    public Order(int tableNumber, int dishId, int dishCount, LocalDateTime orderedTime, LocalDateTime fulfilmentTime, boolean isPaid){
         this.tableNumber = tableNumber;
         this.dishId = dishId;
+        this.dishCount = dishCount;
         this.orderedTime = orderedTime;
         this.setFulfilmentTime(fulfilmentTime);
         this.setPaid(isPaid);
@@ -34,6 +37,14 @@ public class Order {
 
     public int getDishId() {
         return dishId;
+    }
+
+    public int getDishCount() {
+        return dishCount;
+    }
+
+    public void setDishCount(int dishCount) {
+        this.dishCount = dishCount;
     }
 
     public LocalDateTime getOrderedTime() {
@@ -65,6 +76,7 @@ public class Order {
         String lineToWrite = "";
         lineToWrite += tableNumber + separator;
         lineToWrite += dishId + separator;
+        lineToWrite += dishCount + separator;
         lineToWrite += orderedTime + separator;
         lineToWrite += fulfilmentTime + separator;
         lineToWrite += isPaid;

@@ -44,14 +44,15 @@ public class OrderBook extends ArrayList<Order> {
 
     private void parseLineFromFile(String line) throws RestaurantException {
         String[] lineItems = line.split(separator);
-        if (lineItems.length == 5) {
+        if (lineItems.length == 6) {
             try {
                 int tableNumber = Integer.parseInt(lineItems[0]);
                 int dishId = Integer.parseInt(lineItems[1]);
-                LocalDateTime orderedTime = LocalDateTime.parse(lineItems[2]);
-                LocalDateTime fulfilmentTime = LocalDateTime.parse(lineItems[3]);
-                boolean isPaid = Boolean.parseBoolean(lineItems[4]);
-                Order readOrder = new Order(tableNumber, dishId, orderedTime, fulfilmentTime, isPaid);
+                int dishCount = Integer.parseInt(lineItems[2]);
+                LocalDateTime orderedTime = LocalDateTime.parse(lineItems[3]);
+                LocalDateTime fulfilmentTime = LocalDateTime.parse(lineItems[4]);
+                boolean isPaid = Boolean.parseBoolean(lineItems[5]);
+                Order readOrder = new Order(tableNumber, dishId, dishCount, orderedTime, fulfilmentTime, isPaid);
                 this.add(readOrder);
             } catch (NumberFormatException exc){
                 throw new RestaurantException("Error parsing Orders from file on line: "+line);

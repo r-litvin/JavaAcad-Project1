@@ -36,7 +36,8 @@ public class DishBook extends ArrayList<Dish> {
                 try {
                     parseLineFromFile(line);
                 } catch (RestaurantException exception) {
-                    throw new RestaurantException("Error reading DishBook from file: Could not parse line: "
+                    throw new RestaurantException("Error reading DishBook from file: "+fileName
+                            +" Could not parse line: "
                             + line + " " + exception.getLocalizedMessage());
                 }
             }

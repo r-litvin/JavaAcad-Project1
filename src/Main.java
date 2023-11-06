@@ -2,20 +2,17 @@ import com.engeto.restaurant.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Restaurant backend starting up.");
         DishBook dishBook = new DishBook();
         OrderBook orders = new OrderBook();
-        testAddDishes(dishBook);
+        testAddDishesOrders(dishBook);
         testAddOrder(orders, dishBook);
 
         testSaveDishBook(dishBook);
-        //test loading DishBook from file:
-        DishBook dishBook2 = testReadDishBookFromFile();
+
         //test orders
         //Zákazníci u stolu 15 si objednali
         // dvakrát kuřecí řízek,
@@ -23,31 +20,31 @@ public class Main {
         // dvakrát Kofolu.
         // Kofolu už dostali, na řízek ještě čekají.
         OrderBook orderBook2 = new OrderBook();
-        Order order1 = new Order(15, 0);
-        Order order2 = new Order(15, 0);
-        orderBook2.add(order1); orderBook2.add(order2);
-        Order order3 = new Order(15, 1);
-        Order order4 = new Order(15, 1);
-        orderBook2.add(order3); orderBook2.add(order4);
-        Order order5 = new Order(15, 3);
-        order5.setOrderedTime(LocalDateTime.of(2023, 11,5,12,44));
-        Order order6 = new Order(15, 3);
-        orderBook2.add(order5); orderBook2.add(order6);
-        order5.setFulfilmentTime(LocalDateTime.now()); order6.setFulfilmentTime(LocalDateTime.now());
-        //pro stul #2
-        Order order7 = new Order(2, 0); Order order8 = new Order(2, 3);
-        Order order9 = new Order(2, 2); Order order10 = new Order(2, 3);
-        order7.setOrderedTime(LocalDateTime.of(2023,11,5,14,34));
-        order7.setFulfilmentTime(LocalDateTime.now());
-        orderBook2.add(order7); orderBook2.add(order8);
-        orderBook2.add(order9); orderBook2.add(order10);
+
         mapOrdersToTablePrice(orderBook2, 15, dishBook2);
 
-        //System.out.println("order7 fulfilment "+order7.getFulfilmentTime()); //null if empty
+        testAddDishOrderToDishBookFromFile(dishBook2, orderBook2);
+
+
+        //task01; task03; task05;
+        testRestaurantManager(dishBook2, orderBook2);
+
+
+        //test scenario
+        testScenario();
+
+
+
+
+
+        System.out.println("Restaurant backend shut down.");
+    }
+
+    private static void testAddDishOrderToDishBookFromFile(DishBook dishBook2, OrderBook orderBook2) {
         try {
             Dish newDish = new Dish("Uho", BigDecimal.valueOf(15), 7);
             dishBook2.add(newDish);
-            Order newOrder = new Order(7,newDish.getDishId());
+            Order newOrder = new Order(7, newDish.getDishId(), 2);
             newOrder.setOrderedTime(LocalDateTime.of(2023,11,4,15,32));
             orderBook2.add(newOrder);
             System.out.println("newDish "+newDish.getDishId());
@@ -57,42 +54,58 @@ public class Main {
             dishBook2.forEach(System.out::println);
 
         } catch (Exception exc){}
-
-
-        //task01; task03; task05;
-        testRestaurantManager(dishBook2, orderBook2);
-        //task02 - option to sort OrderBook by orderedTime
-        orderBook2.sort();
-
-        //System.out.println("minutes diff for order7: "+
-        //                ChronoUnit.MINUTES.between(order5.getOrderedTime(), order5.getFulfilmentTime()));
-        //task03 - average fulfillment time
-
-
-
-
-
-
-        System.out.println("Restaurant backend shut down.");
     }
 
 
-
-
-    private static void testAddDishes(DishBook dishBook){
+    private static void testAddDishesOrders(RestaurantManager restaurantManager){
         try {
             Dish dish1 = new Dish("Kuřecí řízek obalovaný 150 g",
                     BigDecimal.valueOf(189.0),
                     35,
                     "Rizek-Kure-01");
-            dishBook.add(dish1);
+            Dish dish2 = new Dish("Hranolky 150 g",
+                    BigDecimal.valueOf(99.0),
+                    10);
+            Dish dish3 = new Dish("Pstruh na víně 200 g",
+                    BigDecimal.valueOf(269.0),
+                    28,
+                    "Pstruh-01");
+            Dish dish4 = new Dish("Kofola 0,5 l",
+                    BigDecimal.valueOf(55.0),
+                    6);
+            restaurantManager.addDish(dish1);
+            restaurantManager.addDish(dish2);
+            restaurantManager.addDish(dish3);
+            restaurantManager.addDish(dish4);
+            testAddOrders(restaurantManager); //add test Orders as instructed
         } catch (RestaurantException exc){
-            System.err.println("Error setting up 'rizek': "+exc.getLocalizedMessage());
+            System.err.println("Error setting up test dishes and orders: "+exc.getLocalizedMessage());
             }
     }
 
+    private static void testAddOrders(RestaurantManager restaurantManager) throws RestaurantException{
+        //pro stul 15
+        Order order1 = new Order(15, 0, 2);
+        restaurantManager.addOrder(order1);
+        Order order2 = new Order(15, 1, 2);
+        restaurantManager.addOrder(order2);
+        Order order3 = new Order(15, 3, 2);
+        order3.setOrderedTime(LocalDateTime.of(2023, 11, 5, 12, 44));
+        restaurantManager.addOrder(order3);
+        order3.setFulfilmentTime(LocalDateTime.now());
+        //pro stul #2
+        Order order4 = new Order(2, 0, 1);
+        Order order5 = new Order(2, 3, 2);
+        Order order6 = new Order(2, 2, 1);
+        order4.setOrderedTime(LocalDateTime.of(2023, 11, 5, 14, 34));
+        order4.setFulfilmentTime(LocalDateTime.now());
+        restaurantManager.addOrder(order4);
+        restaurantManager.addOrder(order5);
+        restaurantManager.addOrder(order6);
+    }
+
     private static void testAddOrder(OrderBook orders, DishBook dishes){
-        Order order1 = new Order(1, dishes.get(0).getDishId());
+        Order order1 = new Order(1, dishes.get(0).getDishId(), 2);
         System.out.println("test: order1 for table "+
                 order1.getTableNumber()+" has dishId "+
                 order1.getDishId());
@@ -108,39 +121,57 @@ public class Main {
         }
     }
 
-    private static DishBook testReadDishBookFromFile() {
-        DishBook dishBook2 = new DishBook();
-        try {
-            dishBook2.readFromFile("dish_book_01.txt");
-        } catch (RestaurantException exc){
-            System.err.println("Dish Book could not be read from file "+exc.getLocalizedMessage());
-        }
-        System.out.println("dishbook2 now has size: "+ dishBook2.size()+"");
-        System.out.println("dish #2 in dishbook is "+ dishBook2.get(2).stringToFile(" "));
-        return dishBook2;
-    }
 
-    private static void mapOrdersToTablePrice(OrderBook orderBook, int tableId, DishBook dishBook){
-        BigDecimal totalPrice = BigDecimal.valueOf(0);
-        for(Order order : orderBook){
-            if(order.getTableNumber()==tableId){
-                totalPrice = totalPrice.add(dishBook.get(order.getDishId()).getPrice());
-            }
-        }
-        System.out.println("Total for orders on table "+tableId
-                + " is "+totalPrice + " CZK.");
-    }
+
+
 
     public static void testRestaurantManager(DishBook dishBook, OrderBook orderBook){
         RestaurantManager restaurantManager = new RestaurantManager(dishBook, orderBook);
         //task01 - count unfulfilled orders
+
+
+    }
+
+    private static void testScenario(){
+        RestaurantManager testRestaurantManager = new RestaurantManager();
+        //test01: read data from files
+        String dishFileName = "dish_book_10.txt";
+        String orderFileName = "order_book_10.txt";
+        try {
+            testRestaurantManager.readDishBookFromFile(dishFileName);
+        } catch (RestaurantException exc){
+            System.err.println("Error reading DishBook from file "
+                    +dishFileName+" : "+exc.getLocalizedMessage());
+        }
+        try {
+            testRestaurantManager.readOrderBookFromFile(orderFileName);
+        } catch (RestaurantException exc){
+            System.err.println("Error reading OrderBook from file "
+                    +orderFileName+" : "+exc.getLocalizedMessage());
+        }
+        if(testRestaurantManager.checkOrderBookDishIdConsistency()!=0){
+            System.err.println("RestaurantManager has error in order database!");
+        }
+        //test02: insert test dishes into the system /i.e. dishBook is empty
+        if (testRestaurantManager.getDishBookSize()==0){
+            testAddDishesOrders(testRestaurantManager);
+        }
+        //test03: print total cost of orders for table 15
+        testRestaurantManager.getTableOrdersPrice(15);
+        //test04: demonstrate all management methods:
+        //test04-01
         System.out.println("Number of unfulfilled orders is: "
-                + restaurantManager.countUnfulfilledOrders());
-        //task03 - average fulfillment time
+                + testRestaurantManager.countUnfulfilledOrders());
+        //task04-02 - option to sort OrderBook by orderedTime
+        testRestaurantManager.sortOrderBook();
+        //task04-03 - average fulfillment time
         System.out.println("Average fulfillment time is: "
-                + String.format("%.0f",restaurantManager.averageFulfillmentTime())+ " minutes.");
-        //task05 - list of dishes ordered today
+                + String.format("%.0f",testRestaurantManager.averageFulfillmentTime())+ " minutes.");
+        //task04-04 is missing in the exercise definitions
+        //task04-05 - list of dishes ordered today
         System.out.println("Dishes ordered today:");
-        restaurantManager.dishesOrderedToday().forEach(System.out::println);
+        testRestaurantManager.dishesOrderedToday().forEach(System.out::println);
+
+
     }
 }

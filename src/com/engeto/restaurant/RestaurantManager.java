@@ -1,5 +1,6 @@
 package com.engeto.restaurant;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -7,9 +8,48 @@ public class RestaurantManager {
     private DishBook dishBook;
     private OrderBook orderBook;
 
-    public RestaurantManager(DishBook dishBook, OrderBook orderBook){
-        this.dishBook = dishBook;
-        this.orderBook = orderBook;
+    public RestaurantManager(){
+        this.dishBook = new DishBook();
+        this.orderBook = new OrderBook();
+    }
+
+    public void readDishBookFromFile(String fileName) throws RestaurantException {
+        this.dishBook.readFromFile(fileName);
+    }
+
+    public void readOrderBookFromFile(String fileName) throws RestaurantException{
+        this.orderBook.readFromFile(fileName);
+    }
+
+    public int getDishBookSize(){
+        return this.dishBook.size();
+    }
+
+    public int getOrderBookSize(){
+        return this.orderBook.size();
+    }
+    /*
+    Checks that each Order in orderBook has existing dishId in dishBook.
+     */
+    public int checkOrderBookDishIdConsistency(){
+        for (Order order : this.orderBook){
+            if (this.dishBook.get(order.getDishId())==null){
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    public void addDish(Dish newDish){
+        this.dishBook.add(newDish);
+    }
+
+    public void addOrder(Order order) throws RestaurantException{
+        if(this.dishBook.get(order.getDishId())!=null){
+            this.orderBook.add(order);
+        } else {
+            throw new RestaurantException("Order cannot by added - Dish is not in dish book!");
+        }
     }
 
     public int countUnfulfilledOrders(){
@@ -20,6 +60,10 @@ public class RestaurantManager {
             }
         }
         return ordersNotFinished;
+    }
+
+    public void sortOrderBook(){
+        this.orderBook.sort();
     }
 
     public double averageFulfillmentTime(){
@@ -50,5 +94,18 @@ public class RestaurantManager {
             }
         }
         return orderedToday;
+    }
+    /*
+    Writes total order cost at indicated table.
+     */
+    public void getTableOrdersPrice(int tableId){
+        BigDecimal totalPrice = BigDecimal.valueOf(0);
+        for(Order order : this.orderBook){
+            if(order.getTableNumber()==tableId){
+                totalPrice = totalPrice.add(this.dishBook.get(order.getDishId()).getPrice());
+            }
+        }
+        System.out.println("Total for orders on table "+tableId
+                + " is "+totalPrice + " CZK.");
     }
 }
