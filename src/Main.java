@@ -6,36 +6,9 @@ import java.time.LocalDateTime;
 public class Main {
     public static void main(String[] args) {
         System.out.println("Restaurant backend starting up.");
-        DishBook dishBook = new DishBook();
-        OrderBook orders = new OrderBook();
-        testAddDishesOrders(dishBook);
-        testAddOrder(orders, dishBook);
 
-        testSaveDishBook(dishBook);
-
-        //test orders
-        //Zákazníci u stolu 15 si objednali
-        // dvakrát kuřecí řízek,
-        // dvakrát hranolky a
-        // dvakrát Kofolu.
-        // Kofolu už dostali, na řízek ještě čekají.
-        OrderBook orderBook2 = new OrderBook();
-
-        mapOrdersToTablePrice(orderBook2, 15, dishBook2);
-
-        testAddDishOrderToDishBookFromFile(dishBook2, orderBook2);
-
-
-        //task01; task03; task05;
-        testRestaurantManager(dishBook2, orderBook2);
-
-
-        //test scenario
+        //test scenario 1 - most tasks tested here
         testScenario();
-
-
-
-
 
         System.out.println("Restaurant backend shut down.");
     }
@@ -104,14 +77,6 @@ public class Main {
         restaurantManager.addOrder(order6);
     }
 
-    private static void testAddOrder(OrderBook orders, DishBook dishes){
-        Order order1 = new Order(1, dishes.get(0).getDishId(), 2);
-        System.out.println("test: order1 for table "+
-                order1.getTableNumber()+" has dishId "+
-                order1.getDishId());
-        orders.add(order1);
-    }
-
     private static void testSaveDishBook(DishBook dishBook) {
         //test saving DishBook:
         try {
@@ -119,17 +84,6 @@ public class Main {
         } catch (RestaurantException exc){
             System.err.println("Dish Book could not be saved: "+exc.getLocalizedMessage());
         }
-    }
-
-
-
-
-
-    public static void testRestaurantManager(DishBook dishBook, OrderBook orderBook){
-        RestaurantManager restaurantManager = new RestaurantManager(dishBook, orderBook);
-        //task01 - count unfulfilled orders
-
-
     }
 
     private static void testScenario(){

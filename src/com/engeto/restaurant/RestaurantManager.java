@@ -102,7 +102,8 @@ public class RestaurantManager {
         BigDecimal totalPrice = BigDecimal.valueOf(0);
         for(Order order : this.orderBook){
             if(order.getTableNumber()==tableId){
-                totalPrice = totalPrice.add(this.dishBook.get(order.getDishId()).getPrice());
+                totalPrice = totalPrice.add(this.dishBook.get(order.getDishId()).getPrice()
+                * this.dishBook.get(order.getDishCount());
             }
         }
         System.out.println("Total for orders on table "+tableId
