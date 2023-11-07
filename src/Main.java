@@ -108,14 +108,12 @@ public class Main {
         try {
             testRestaurantManager.readDishBookFromFile(dishFileName);
         } catch (RestaurantException exc){
-            System.err.println("Error reading DishBook from file "
-                    +dishFileName+" : "+exc.getLocalizedMessage());
+            System.err.println("Error in Task01: "+exc.getLocalizedMessage());
         }
         try {
             testRestaurantManager.readOrderBookFromFile(orderFileName);
         } catch (RestaurantException exc){
-            System.err.println("Error reading OrderBook from file "
-                    +orderFileName+" : "+exc.getLocalizedMessage());
+            System.err.println("Error in Task01: "+exc.getLocalizedMessage());
         }
         if(testRestaurantManager.checkOrderBookDishIdConsistency()!=0){
             System.err.println("RestaurantManager has error in order database!");
