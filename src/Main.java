@@ -23,23 +23,6 @@ public class Main {
         System.out.println("Restaurant backend shut down.");
     }
 
-    private static void testAddDishOrderToDishBookFromFile(DishBook dishBook2, OrderBook orderBook2) {
-        try {
-            Dish newDish = new Dish("Uho", BigDecimal.valueOf(15), 7);
-            dishBook2.add(newDish);
-            Order newOrder = new Order(7, newDish.getDishId(), 2);
-            newOrder.setOrderedTime(LocalDateTime.of(2023,11,4,15,32));
-            orderBook2.add(newOrder);
-            System.out.println("newDish "+newDish.getDishId());
-            System.out.println("NewOrder "+ newOrder);
-            System.out.println("DishBook now :");
-            //unique numbers don't work
-            dishBook2.forEach(System.out::println);
-
-        } catch (Exception exc){}
-    }
-
-
     private static void testAddDishesOrders(RestaurantManager restaurantManager){
         try {
             Dish dish1 = new Dish("Kuřecí řízek obalovaný 150 g",
@@ -88,15 +71,6 @@ public class Main {
         restaurantManager.addOrder(order4);
         restaurantManager.addOrder(order5);
         restaurantManager.addOrder(order6);
-    }
-
-    private static void testSaveDishBook(DishBook dishBook) {
-        //test saving DishBook:
-        try {
-            dishBook.saveToFile("dish_book_00.txt");
-        } catch (RestaurantException exc){
-            System.err.println("Dish Book could not be saved: "+exc.getLocalizedMessage());
-        }
     }
 
     private static void testScenario(){
