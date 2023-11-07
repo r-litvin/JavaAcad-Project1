@@ -31,14 +31,10 @@ public class Dish {
     }
 
     //region: getters and setters
-
     public void setDishIdStart(int idStart){
         dishIdStart = idStart;
     }
 
-    public int getDishIdStart(){
-        return dishIdStart;
-    }
     public String getTitle() {
         return title;
     }

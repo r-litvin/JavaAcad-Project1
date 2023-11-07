@@ -34,9 +34,6 @@ public class RestaurantManager {
         return this.dishBook.size();
     }
 
-    public int getOrderBookSize(){
-        return this.orderBook.size();
-    }
     /*
     Checks that each Order in orderBook has existing dishId in dishBook.
      */
