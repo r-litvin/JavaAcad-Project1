@@ -97,7 +97,6 @@ public class RestaurantManager {
         for(Order order : orderBook){
             if(order.getFulfilmentTime() != null){
                 totalFulfillmentTime += order.fulfillmentTimeMinutes();
-                System.out.println("order: "+order+"| time "+order.fulfillmentTimeMinutes());
                 totalFulfilledOrders++;
             }
         }
