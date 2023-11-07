@@ -2,6 +2,7 @@ package com.engeto.restaurant;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class RestaurantManager {
@@ -17,8 +18,16 @@ public class RestaurantManager {
         this.dishBook.readFromFile(fileName);
     }
 
+    public void saveDishBookToFile(String fileName) throws RestaurantException{
+        this.dishBook.saveToFile(fileName);
+    }
+
     public void readOrderBookFromFile(String fileName) throws RestaurantException{
         this.orderBook.readFromFile(fileName);
+    }
+
+    public void saveOrderBookToFile(String fileName) throws RestaurantException{
+        this.orderBook.saveToFile(fileName);
     }
 
     public int getDishBookSize(){
@@ -44,11 +53,27 @@ public class RestaurantManager {
         this.dishBook.add(newDish);
     }
 
+    public void removeDish(Dish oldDish) throws RestaurantException{
+        if(this.dishBook.contains(oldDish)){
+            this.dishBook.remove(oldDish);
+        } else {
+            throw new RestaurantException("Dish cannot be removed - dish is not in DishBook!");
+        }
+    }
+
     public void addOrder(Order order) throws RestaurantException{
         if(this.dishBook.get(order.getDishId())!=null){
             this.orderBook.add(order);
         } else {
             throw new RestaurantException("Order cannot by added - Dish is not in dish book!");
+        }
+    }
+
+    public void removeOrder(Order order) throws RestaurantException{
+        if(this.orderBook.contains(order)) {
+            this.orderBook.remove(order);
+        } else {
+            throw new RestaurantException("Order cannot be removed - order does not exist!");
         }
     }
 
@@ -109,5 +134,34 @@ public class RestaurantManager {
         }
         System.out.println("Total for orders on table "+tableId
                 + " is "+totalPrice + " CZK.");
+    }
+
+    public void printOrderListForTable(int tableNumber) {
+        System.out.printf("** Objednávky pro stůl č. %2d **%n****%n",tableNumber);
+        int index = 1;
+        for(Order order : orderBook){
+            if(order.getTableNumber()==tableNumber){
+                printOrderNiceFormat(order, index);
+                index++;
+            }
+        }
+        System.out.println("******\n");
+    }
+
+    private void printOrderNiceFormat(Order order, int index) {
+        String formatString;
+        BigDecimal totalOrderPrice;
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+        formatString = "%d. %s ";
+        if(order.getDishCount()>1){ formatString += order.getDishCount()+"x "; }
+        totalOrderPrice = this.dishBook.get(order.getDishId()).getPrice().multiply(BigDecimal.valueOf(order.getDishCount()));
+        formatString += "("+totalOrderPrice+" Kč):\t";
+        //time now
+        formatString += order.getOrderedTime().format(timeFormat)+"-";
+        if(order.getFulfilmentTime()!=null){ formatString += order.getFulfilmentTime().format(timeFormat);}
+        formatString += "\t";
+        if(order.isPaid()){ formatString += "zaplaceno"; }
+        formatString += "\n";
+        System.out.printf(formatString, index, this.dishBook.get(order.getDishId()).getTitle());
     }
 }

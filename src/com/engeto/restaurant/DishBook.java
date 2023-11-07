@@ -43,7 +43,7 @@ public class DishBook extends ArrayList<Dish> {
             }
             this.get(0).setDishIdStart(getHighestId()+1);
         } catch (FileNotFoundException exc) {
-            throw new RestaurantException("Error reading DishBook from file: File not found" + exc.getLocalizedMessage());
+            throw new RestaurantException("Error reading DishBook from file: File not found " + exc.getLocalizedMessage());
         }
     }
 

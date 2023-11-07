@@ -7,8 +7,17 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Restaurant backend starting up.");
 
-        //test scenario 1 - most tasks tested here
+        //test scenario 1 - tasks tested here are task01 - task05
         testScenario();
+        //task06: load back from files
+        RestaurantManager testManager2 = new RestaurantManager();
+        try {
+            testManager2.readDishBookFromFile("testScenario-dishBook.txt");
+            testManager2.readOrderBookFromFile("testScenario-orderBook.txt");
+        } catch (RestaurantException exc){
+            System.err.println("Reading files for testManager2 failed: "+exc.getLocalizedMessage());
+        }
+        testManager2.printOrderListForTable(15);
 
         System.out.println("Restaurant backend shut down.");
     }
@@ -72,6 +81,9 @@ public class Main {
         Order order6 = new Order(2, 2, 1);
         order4.setOrderedTime(LocalDateTime.of(2023, 11, 5, 14, 34));
         order4.setFulfilmentTime(LocalDateTime.now());
+        order5.setOrderedTime(LocalDateTime.of(2023, 11, 5, 14, 34));
+        order5.setFulfilmentTime(LocalDateTime.now());
+        order5.setPaid(true);
         restaurantManager.addOrder(order4);
         restaurantManager.addOrder(order5);
         restaurantManager.addOrder(order6);
@@ -113,18 +125,31 @@ public class Main {
         //test03: print total cost of orders for table 15
         testRestaurantManager.getTableOrdersPrice(15);
         //test04: demonstrate all management methods:
-        //test04-01
+        //test04-01: print Number of unfulfilled orders
         System.out.println("Number of unfulfilled orders is: "
                 + testRestaurantManager.countUnfulfilledOrders());
-        //task04-02 - option to sort OrderBook by orderedTime
+        //task04-02: option to sort OrderBook by orderedTime
         testRestaurantManager.sortOrderBook();
-        //task04-03 - average fulfillment time
+        //task04-03: average fulfillment time
         System.out.println("Average fulfillment time is: "
                 + String.format("%.0f",testRestaurantManager.averageFulfillmentTime())+ " minutes.");
-        //task04-04 is missing in the exercise definitions
-        //task04-05 - list of dishes ordered today
+        //task04-04 is missing in the exercise definitions ;-)
+        //task04-05: list of dishes ordered today
         System.out.println("Dishes ordered today:");
         testRestaurantManager.dishesOrderedToday().forEach(System.out::println);
+        //task04-06: Export order list for table in strict format
+        testRestaurantManager.printOrderListForTable(2);
+        //task05: save data to files
+        try {
+            testRestaurantManager.saveDishBookToFile("testScenario-dishBook.txt");
+        } catch (RestaurantException exc){
+            System.err.println("Could not save testScenario DishBook! "+exc.getLocalizedMessage());
+        }
+        try {
+            testRestaurantManager.saveOrderBookToFile("testScenario-orderBook.txt");
+        } catch (RestaurantException exc){
+            System.err.println("Could not save testScenario OrderBook! "+exc.getLocalizedMessage());
+        }
 
 
     }

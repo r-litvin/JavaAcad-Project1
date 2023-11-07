@@ -38,21 +38,25 @@ public class OrderBook extends ArrayList<Order> {
                 }
             }
         } catch (FileNotFoundException exc) {
-            throw new RestaurantException("Error reading OrderBook from file: File not found" + exc.getLocalizedMessage());
+            throw new RestaurantException("Error reading OrderBook from file: File not found " + exc.getLocalizedMessage());
         }
     }
 
     private void parseLineFromFile(String line) throws RestaurantException {
         String[] lineItems = line.split(separator);
+        int tableNumber;
+        int dishId;
+        int dishCount;
         if (lineItems.length == 6) {
             try {
-                int tableNumber = Integer.parseInt(lineItems[0]);
-                int dishId = Integer.parseInt(lineItems[1]);
-                int dishCount = Integer.parseInt(lineItems[2]);
-                LocalDateTime orderedTime = LocalDateTime.parse(lineItems[3]);
-                LocalDateTime fulfilmentTime = LocalDateTime.parse(lineItems[4]);
-                boolean isPaid = Boolean.parseBoolean(lineItems[5]);
-                Order readOrder = new Order(tableNumber, dishId, dishCount, orderedTime, fulfilmentTime, isPaid);
+                tableNumber = Integer.parseInt(lineItems[0]);
+                dishId = Integer.parseInt(lineItems[1]);
+                dishCount = Integer.parseInt(lineItems[2]);
+                Order readOrder = new Order(tableNumber, dishId, dishCount);
+                readOrder.setOrderedTime(LocalDateTime.parse(lineItems[3]));
+                if (!lineItems[4].equals("null")){
+                    readOrder.setFulfilmentTime(LocalDateTime.parse(lineItems[4])); }
+                readOrder.setPaid(Boolean.parseBoolean(lineItems[5]));
                 this.add(readOrder);
             } catch (NumberFormatException exc){
                 throw new RestaurantException("Error parsing Orders from file on line: "+line);

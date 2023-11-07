@@ -19,15 +19,6 @@ public class Order {
         this.orderedTime = LocalDateTime.now();
     }
 
-    public Order(int tableNumber, int dishId, int dishCount, LocalDateTime orderedTime, LocalDateTime fulfilmentTime, boolean isPaid){
-        this.tableNumber = tableNumber;
-        this.dishId = dishId;
-        this.dishCount = dishCount;
-        this.orderedTime = orderedTime;
-        this.setFulfilmentTime(fulfilmentTime);
-        this.setPaid(isPaid);
-    }
-
     //region: getters and setters
 
 
