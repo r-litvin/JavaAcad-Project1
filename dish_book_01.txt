@@ -1,4 +1,0 @@
-0	Kuřecí řízek obalovaný 150 g	189.0	35	Rizek-Kure-01
-1	Hranolky 150 g	99.0	10	blank
-2	Pstruh na víně 200 g	269.0	25	Pstruh-01
-3	Kofola 0,5 l	55.0	5	blank
