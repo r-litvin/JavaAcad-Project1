@@ -17,7 +17,8 @@ public class Dish {
         this.setPreparationTime(preparationTime);
         this.image = image;
     }
-    //constructor for loading Dishes from file
+
+    /* constructor for loading Dishes from file */
     public Dish(int dishId, String title, BigDecimal price, int preparationTime, String image)  throws RestaurantException{
         this.dishId = dishId;
         this.title = title;
