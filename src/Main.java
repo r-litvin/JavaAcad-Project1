@@ -39,10 +39,8 @@ public class Main {
             Dish dish4 = new Dish("Kofola 0,5 l",
                     BigDecimal.valueOf(55.0),
                     6);
-            restaurantManager.addDish(dish1);
-            restaurantManager.addDish(dish2);
-            restaurantManager.addDish(dish3);
-            restaurantManager.addDish(dish4);
+            restaurantManager.addDish(dish1); restaurantManager.addDish(dish2);
+            restaurantManager.addDish(dish3); restaurantManager.addDish(dish4);
             testAddOrders(restaurantManager); //add test Orders as instructed
         } catch (RestaurantException exc){
             System.err.println("Error setting up test dishes and orders: "+exc.getLocalizedMessage());
@@ -51,10 +49,8 @@ public class Main {
 
     private static void testAddOrders(RestaurantManager restaurantManager) throws RestaurantException{
         //pro stul 15
-        Order order1 = new Order(15, 0, 2);
-        restaurantManager.addOrder(order1);
-        Order order2 = new Order(15, 1, 2);
-        restaurantManager.addOrder(order2);
+        restaurantManager.addOrder(new Order(15, 0, 2));
+        restaurantManager.addOrder(new Order(15, 1, 2));
         Order order3 = new Order(15, 3, 2);
         order3.setOrderedTime(LocalDateTime.of(2023, 11, 5, 12, 44));
         restaurantManager.addOrder(order3);
@@ -62,7 +58,6 @@ public class Main {
         //pro stul #2
         Order order4 = new Order(2, 0, 1);
         Order order5 = new Order(2, 3, 2);
-        Order order6 = new Order(2, 2, 1);
         order4.setOrderedTime(LocalDateTime.of(2023, 11, 5, 14, 34));
         order4.setFulfilmentTime(LocalDateTime.now());
         order5.setOrderedTime(LocalDateTime.of(2023, 11, 5, 14, 34));
@@ -70,12 +65,37 @@ public class Main {
         order5.setPaid(true);
         restaurantManager.addOrder(order4);
         restaurantManager.addOrder(order5);
-        restaurantManager.addOrder(order6);
+        restaurantManager.addOrder(new Order(2, 2, 1));
     }
 
-    private static void testScenario(){
+    private static void testScenario(){ //keeping this method longer, just comments+method calls would be 18 lines anyway
         RestaurantManager testRestaurantManager = new RestaurantManager();
         //task01: read data from files
+        testTask01(testRestaurantManager);
+        //task02: insert test dishes into the system /i.e. dishBook is empty
+        testTask02(testRestaurantManager);
+        //task03: print total cost of orders for table 15
+        System.out.println("** Task03 **");
+        testRestaurantManager.getTableOrdersPrice(15);
+        //task04: demonstrate all management methods:
+        //task04-01: print Number of unfulfilled orders
+        testTask04_01(testRestaurantManager);
+        //task04-02: option to sort OrderBook by orderedTime
+        System.out.println("** Task04-02 **");
+        testRestaurantManager.sortOrderBook();
+        //task04-03: average fulfillment time
+        testTask04_03(testRestaurantManager);
+        //task04-04 is missing in the exercise definitions ;-)
+        //task04-05: list of dishes ordered today
+        testTask04_05(testRestaurantManager);
+        //task04-06: Export order list for table in strict format
+        System.out.println("** Task04-06 **");
+        testRestaurantManager.printOrderListForTable(2);
+        //task05: save data to files
+        testTask05(testRestaurantManager);
+    }
+
+    private static void testTask01(RestaurantManager testRestaurantManager) {
         System.out.println("** Task01 **");
         String dishFileName = "dish_book_10.txt";
         String orderFileName = "order_book_10.txt";
@@ -92,35 +112,34 @@ public class Main {
         if(testRestaurantManager.checkOrderBookDishIdConsistency()!=0){
             System.err.println("RestaurantManager has error in order database!");
         }
-        //task02: insert test dishes into the system /i.e. dishBook is empty
+    }
+
+    private static void testTask02(RestaurantManager testRestaurantManager) {
         System.out.println("** Task02 **");
         if (testRestaurantManager.getDishBookSize()==0){
             testAddDishesOrders(testRestaurantManager);
         }
-        //task03: print total cost of orders for table 15
-        System.out.println("** Task03 **");
-        testRestaurantManager.getTableOrdersPrice(15);
-        //task04: demonstrate all management methods:
-        //task04-01: print Number of unfulfilled orders
+    }
+
+    private static void testTask04_01(RestaurantManager testRestaurantManager) {
         System.out.println("** Task04-01 **");
         System.out.println("Number of unfulfilled orders is: "
                 + testRestaurantManager.countUnfulfilledOrders());
-        //task04-02: option to sort OrderBook by orderedTime
-        System.out.println("** Task04-02 **");
-        testRestaurantManager.sortOrderBook();
-        //task04-03: average fulfillment time
+    }
+
+    private static void testTask04_03(RestaurantManager testRestaurantManager) {
         System.out.println("** Task04-03 **");
         System.out.println("Average fulfillment time is: "
-                + String.format("%.0f",testRestaurantManager.averageFulfillmentTime())+ " minutes.");
-        //task04-04 is missing in the exercise definitions ;-)
-        //task04-05: list of dishes ordered today
+                + String.format("%.0f", testRestaurantManager.averageFulfillmentTime())+ " minutes.");
+    }
+
+    private static void testTask04_05(RestaurantManager testRestaurantManager) {
         System.out.println("** Task04-05 **");
         System.out.println("Dishes ordered today:");
         testRestaurantManager.dishesOrderedToday().forEach(System.out::println);
-        //task04-06: Export order list for table in strict format
-        System.out.println("** Task04-06 **");
-        testRestaurantManager.printOrderListForTable(2);
-        //task05: save data to files
+    }
+
+    private static void testTask05(RestaurantManager testRestaurantManager) {
         System.out.println("** Task05 **");
         try {
             testRestaurantManager.saveDishBookToFile("testScenario-dishBook.txt");
@@ -132,7 +151,6 @@ public class Main {
         } catch (RestaurantException exc){
             System.err.println("Could not save testScenario OrderBook! "+exc.getLocalizedMessage());
         }
-
-
     }
+
 }
