@@ -71,31 +71,34 @@ public class Main {
     private static void testScenario(){ //keeping this method longer, just comments+method calls would be 18 lines anyway
         RestaurantManager testRestaurantManager = new RestaurantManager();
         //task01: read data from files
-        testTask01(testRestaurantManager);
+        testTask01readDataFromFiles(testRestaurantManager);
         //task02: insert test dishes into the system /i.e. dishBook is empty
-        testTask02(testRestaurantManager);
+        testTask02addDishesOrders(testRestaurantManager);
         //task03: print total cost of orders for table 15
-        System.out.println("** Task03 **");
-        testRestaurantManager.getTableOrdersPrice(15);
+        testTask03getTableOrdersPrice(testRestaurantManager);
         //task04: demonstrate all management methods:
         //task04-01: print Number of unfulfilled orders
-        testTask04_01(testRestaurantManager);
+        testTask04_01countUnfulfilledOrders(testRestaurantManager);
         //task04-02: option to sort OrderBook by orderedTime
-        System.out.println("** Task04-02 **");
-        testRestaurantManager.sortOrderBook();
+        testTask04_02sortOrderBook(testRestaurantManager);
         //task04-03: average fulfillment time
-        testTask04_03(testRestaurantManager);
+        testTask04_03averageFulfillmentTime(testRestaurantManager);
         //task04-04 is missing in the exercise definitions ;-)
         //task04-05: list of dishes ordered today
-        testTask04_05(testRestaurantManager);
+        testTask04_05dishesOrderedToday(testRestaurantManager);
         //task04-06: Export order list for table in strict format
-        System.out.println("** Task04-06 **");
-        testRestaurantManager.printOrderListForTable(2);
+        testTask04_06printOrderListForTable(testRestaurantManager);
         //task05: save data to files
-        testTask05(testRestaurantManager);
+        testTask05saveDataToFiles(testRestaurantManager);
     }
 
-    private static void testTask01(RestaurantManager testRestaurantManager) {
+    private static void testTask03getTableOrdersPrice(RestaurantManager testRestaurantManager) {
+        System.out.println("** Task03 **");
+        testRestaurantManager.getTableOrdersPrice(15);
+    }
+
+
+    private static void testTask01readDataFromFiles(RestaurantManager testRestaurantManager) {
         System.out.println("** Task01 **");
         String dishFileName = "dish_book_10.txt";
         String orderFileName = "order_book_10.txt";
@@ -114,32 +117,42 @@ public class Main {
         }
     }
 
-    private static void testTask02(RestaurantManager testRestaurantManager) {
+    private static void testTask02addDishesOrders(RestaurantManager testRestaurantManager) {
         System.out.println("** Task02 **");
         if (testRestaurantManager.getDishBookSize()==0){
             testAddDishesOrders(testRestaurantManager);
         }
     }
 
-    private static void testTask04_01(RestaurantManager testRestaurantManager) {
+    private static void testTask04_01countUnfulfilledOrders(RestaurantManager testRestaurantManager) {
         System.out.println("** Task04-01 **");
         System.out.println("Number of unfulfilled orders is: "
                 + testRestaurantManager.countUnfulfilledOrders());
     }
 
-    private static void testTask04_03(RestaurantManager testRestaurantManager) {
+    private static void testTask04_02sortOrderBook(RestaurantManager testRestaurantManager) {
+        System.out.println("** Task04-02 **");
+        testRestaurantManager.sortOrderBook();
+    }
+
+    private static void testTask04_03averageFulfillmentTime(RestaurantManager testRestaurantManager) {
         System.out.println("** Task04-03 **");
         System.out.println("Average fulfillment time is: "
                 + String.format("%.0f", testRestaurantManager.averageFulfillmentTime())+ " minutes.");
     }
 
-    private static void testTask04_05(RestaurantManager testRestaurantManager) {
+    private static void testTask04_05dishesOrderedToday(RestaurantManager testRestaurantManager) {
         System.out.println("** Task04-05 **");
         System.out.println("Dishes ordered today:");
         testRestaurantManager.dishesOrderedToday().forEach(System.out::println);
     }
 
-    private static void testTask05(RestaurantManager testRestaurantManager) {
+    private static void testTask04_06printOrderListForTable(RestaurantManager testRestaurantManager) {
+        System.out.println("** Task04-06 **");
+        testRestaurantManager.printOrderListForTable(2);
+    }
+
+    private static void testTask05saveDataToFiles(RestaurantManager testRestaurantManager) {
         System.out.println("** Task05 **");
         try {
             testRestaurantManager.saveDishBookToFile("testScenario-dishBook.txt");
