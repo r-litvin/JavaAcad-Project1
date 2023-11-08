@@ -43,15 +43,11 @@ public class OrderBook extends ArrayList<Order> {
 
     private void parseLineFromFile(String line) throws RestaurantException {
         String[] lineItems = line.split(separator);
-        int tableNumber;
-        int dishId;
-        int dishCount;
         if (lineItems.length == 6) {
             try {
-                tableNumber = Integer.parseInt(lineItems[0]);
-                dishId = Integer.parseInt(lineItems[1]);
-                dishCount = Integer.parseInt(lineItems[2]);
-                Order readOrder = new Order(tableNumber, dishId, dishCount);
+                Order readOrder = new Order(Integer.parseInt(lineItems[0]),
+                        Integer.parseInt(lineItems[1]),
+                        Integer.parseInt(lineItems[2]));
                 readOrder.setOrderedTime(LocalDateTime.parse(lineItems[3]));
                 if (!lineItems[4].equals("null")){
                     readOrder.setFulfilmentTime(LocalDateTime.parse(lineItems[4])); }

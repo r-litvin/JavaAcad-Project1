@@ -20,8 +20,6 @@ public class Order {
     }
 
     //region: getters and setters
-
-
     public int getTableNumber() {
         return tableNumber;
     }
@@ -77,11 +75,6 @@ public class Order {
     @Override
     public String toString() {
         return this.stringToFile("; ");
-    }
-
-    //not used now?
-    public int compareTo(Order otherOrder) {
-        return this.getOrderedTime().compareTo(otherOrder.getOrderedTime());
     }
 
     public int fulfillmentTimeMinutes(){
