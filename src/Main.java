@@ -9,16 +9,8 @@ public class Main {
 
         //test scenario 1 - tasks tested here are task01 - task05
         testScenario();
-        //task06: load back from files
-        System.out.println("** Task06 **");
-        RestaurantManager testManager2 = new RestaurantManager();
-        try {
-            testManager2.readDishBookFromFile("testScenario-dishBook.txt");
-            testManager2.readOrderBookFromFile("testScenario-orderBook.txt");
-        } catch (RestaurantException exc){
-            System.err.println("Reading files for testManager2 failed: "+exc.getLocalizedMessage());
-        }
-        testManager2.printOrderListForTable(15);
+        //task06: load back from saved files
+        testTask06readFromSavedFiles();
 
         System.out.println("Restaurant backend shut down.");
     }
@@ -66,28 +58,20 @@ public class Main {
         restaurantManager.addOrder(new Order(2, 2, 1));
     }
 
-    private static void testScenario(){ //keeping this method longer, can cut/move comments if necessary, I guess
+    private static void testScenario(){
         RestaurantManager testRestaurantManager = new RestaurantManager();
-        //task01: read data from files
-        testTask01readDataFromFiles(testRestaurantManager);
-        //task02: insert test dishes into the system /i.e. dishBook is empty
-        testTask02addDishesOrders(testRestaurantManager);
-        //task03: print total cost of orders for table 15
-        testTask03getTableOrdersPrice(testRestaurantManager);
+
+        testTask01readDataFromFiles(testRestaurantManager); //task01: read data from files
+        testTask02addDishesOrders(testRestaurantManager); //task02: insert test dishes into the system /i.e. dishBook is empty
+        testTask03getTableOrdersPrice(testRestaurantManager); //task03: print total cost of orders for table 15
         //task04: demonstrate all management methods:
-        //task04-01: print Number of unfulfilled orders
-        testTask04_01countUnfulfilledOrders(testRestaurantManager);
-        //task04-02: option to sort OrderBook by orderedTime
-        testTask04_02sortOrderBook(testRestaurantManager);
-        //task04-03: average fulfillment time
-        testTask04_03averageFulfillmentTime(testRestaurantManager);
+        testTask04_01countUnfulfilledOrders(testRestaurantManager); //task04-01: print Number of unfulfilled orders
+        testTask04_02sortOrderBook(testRestaurantManager); //task04-02: option to sort OrderBook by orderedTime
+        testTask04_03averageFulfillmentTime(testRestaurantManager); //task04-03: average fulfillment time
         //task04-04 is missing in the exercise definitions ;-)
-        //task04-05: list of dishes ordered today
-        testTask04_05dishesOrderedToday(testRestaurantManager);
-        //task04-06: Export order list for table in strict format
-        testTask04_06printOrderListForTable(testRestaurantManager);
-        //task05: save data to files
-        testTask05saveDataToFiles(testRestaurantManager);
+        testTask04_05dishesOrderedToday(testRestaurantManager); //task04-05: list of dishes ordered today
+        testTask04_06printOrderListForTable(testRestaurantManager); //task04-06: Export order list for table in strict format
+        testTask05saveDataToFiles(testRestaurantManager); //task05: save data to files
     }
 
     private static void testTask01readDataFromFiles(RestaurantManager testRestaurantManager) {
@@ -163,4 +147,15 @@ public class Main {
         }
     }
 
+    private static void testTask06readFromSavedFiles() {
+        System.out.println("** Task06 **");
+        RestaurantManager testManager2 = new RestaurantManager();
+        try {
+            testManager2.readDishBookFromFile("testScenario-dishBook.txt");
+            testManager2.readOrderBookFromFile("testScenario-orderBook.txt");
+        } catch (RestaurantException exc){
+            System.err.println("Reading files for testManager2 failed: "+exc.getLocalizedMessage());
+        }
+        testManager2.printOrderListForTable(15);
+    }
 }
