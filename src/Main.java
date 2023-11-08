@@ -25,26 +25,24 @@ public class Main {
 
     private static void testAddDishesOrders(RestaurantManager restaurantManager){
         try {
-            Dish dish1 = new Dish("Kuřecí řízek obalovaný 150 g",
+            restaurantManager.addDish(new Dish("Kuřecí řízek obalovaný 150 g",
                     BigDecimal.valueOf(189.0),
                     35,
-                    "Rizek-Kure-01");
-            Dish dish2 = new Dish("Hranolky 150 g",
+                    "Rizek-Kure-01"));
+            restaurantManager.addDish(new Dish("Hranolky 150 g",
                     BigDecimal.valueOf(99.0),
-                    10);
-            Dish dish3 = new Dish("Pstruh na víně 200 g",
+                    10));
+            restaurantManager.addDish(new Dish("Pstruh na víně 200 g",
                     BigDecimal.valueOf(269.0),
                     28,
-                    "Pstruh-01");
-            Dish dish4 = new Dish("Kofola 0,5 l",
+                    "Pstruh-01"));
+            restaurantManager.addDish(new Dish("Kofola 0,5 l",
                     BigDecimal.valueOf(55.0),
-                    6);
-            restaurantManager.addDish(dish1); restaurantManager.addDish(dish2);
-            restaurantManager.addDish(dish3); restaurantManager.addDish(dish4);
+                    6));
             testAddOrders(restaurantManager); //add test Orders as instructed
         } catch (RestaurantException exc){
             System.err.println("Error setting up test dishes and orders: "+exc.getLocalizedMessage());
-            }
+        }
     }
 
     private static void testAddOrders(RestaurantManager restaurantManager) throws RestaurantException{
@@ -68,7 +66,7 @@ public class Main {
         restaurantManager.addOrder(new Order(2, 2, 1));
     }
 
-    private static void testScenario(){ //keeping this method longer, just comments+method calls would be 18 lines anyway
+    private static void testScenario(){ //keeping this method longer, can cut/move comments if necessary, I guess
         RestaurantManager testRestaurantManager = new RestaurantManager();
         //task01: read data from files
         testTask01readDataFromFiles(testRestaurantManager);
@@ -91,12 +89,6 @@ public class Main {
         //task05: save data to files
         testTask05saveDataToFiles(testRestaurantManager);
     }
-
-    private static void testTask03getTableOrdersPrice(RestaurantManager testRestaurantManager) {
-        System.out.println("** Task03 **");
-        testRestaurantManager.getTableOrdersPrice(15);
-    }
-
 
     private static void testTask01readDataFromFiles(RestaurantManager testRestaurantManager) {
         System.out.println("** Task01 **");
@@ -122,6 +114,11 @@ public class Main {
         if (testRestaurantManager.getDishBookSize()==0){
             testAddDishesOrders(testRestaurantManager);
         }
+    }
+
+    private static void testTask03getTableOrdersPrice(RestaurantManager testRestaurantManager) {
+        System.out.println("** Task03 **");
+        testRestaurantManager.getTableOrdersPrice(15);
     }
 
     private static void testTask04_01countUnfulfilledOrders(RestaurantManager testRestaurantManager) {

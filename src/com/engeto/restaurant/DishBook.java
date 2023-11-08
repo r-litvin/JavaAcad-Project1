@@ -50,13 +50,17 @@ public class DishBook extends ArrayList<Dish> {
     private void parseLineFromFile(String line) throws RestaurantException {
         String[] lineItems = line.split(separator);
         if (lineItems.length == 5) {
-            int dishId = Integer.parseInt(lineItems[0]);
-            String title = lineItems[1];
-            BigDecimal price = new BigDecimal(lineItems[2]);
-            int preparationTime = Integer.parseInt(lineItems[3]);
-            String image = lineItems[4];
-            Dish readDish = new Dish(dishId, title, price, preparationTime, image);
-            this.add(readDish);
+            try {
+                int dishId = Integer.parseInt(lineItems[0]);
+                String title = lineItems[1];
+                BigDecimal price = new BigDecimal(lineItems[2]);
+                int preparationTime = Integer.parseInt(lineItems[3]);
+                String image = lineItems[4];
+                Dish readDish = new Dish(dishId, title, price, preparationTime, image);
+                this.add(readDish);
+            } catch (NumberFormatException exc){
+                throw new RestaurantException("Error reading Dishes from file on line: "+line+exc.getLocalizedMessage());
+            }
         } else {
             throw new RestaurantException("Error reading Dishes from file: incorrect file format on line: " + line);
         }
